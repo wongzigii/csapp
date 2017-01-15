@@ -1,0 +1,79 @@
+## 3-1:
+
+           |Value      | 
+-------------   |--------|
+%eax            | 0x100  |
+0x104           | 0xAB   |
+$0x108          | 0x108  |
+(%eax)          | 0xFF   |
+4(%eax)         | 0xAB   |
+9(%eax,%edx)    | 0x11   |
+260(%ecx,%edx)  | 0x13   |
+0xFC(,%ecx,4)   | 0xFF   |
+(%eax,%edx,4)   | 0x11   |
+
+## 3-2:
+
+    Origin      |  Alter | 
+-------------   |--------|
+mov %eax, (%esp)| movl   |
+mov (%eax), %dx | movw   |
+mov $0xFF, %bl  | movb   |
+mov (%esp,%edx,4), %dh | movb  |
+push $0xFF      | pushl  |
+mov %dx, (%eax) | movw   |
+pop %edi        | popl   |
+
+## 3-3:
+
+                      | Ans | 
+-------------         |--------|
+movb $0xF, (%bl)      | [`bl` can not be used for addressing](http://stackoverflow.com/questions/14494285/is-this-piece-of-assembly-code-invalid)  |
+movl %ax, (%esp)      | `%ax` is 8-bits, `movl` is 16-bits   |
+movw (%eax), 4(%esp)  | Source and destination can not both be memory reference  |
+movb %ah,%sh          | No register named `%sh`   |
+movl %eax,$0x123      | Immediate can not be destination  |
+movl %eax,%dx         | Size of `%eax` is 16-bits, `%dx` is 8-bits   |
+movb %si, 8(%ebp)     | movb -> movw   |
+
+
+## 3-4:
+ikop
+tbd
+
+## 3-5:
+
+                     | Ans    |     Des      |
+-------------        |--------|-----------|
+movl 8(%ebp), %edi   | get xp   |         |
+movl 12(%ebp), %edx  | get yp   |         |
+movl 16(%ebp), %ecx  | get zp   |         |
+movl (%edx), %ebx    | get a at yp    |  int a = xp |
+movl (%ecx), %esi    | get b at zp    |  int b = yp |
+movl (%edi), %eax    | get c at xp    |  int c = zp |
+movl %eax, (%edx)    | store a at yp   | *yp = a |
+movl %ebx, (%ecx)    | store b at zp   | *zp = b |
+movl %esi, (%edi)    | store c at xp   | *xp = c |
+
+## 3-6:
+
+value of %eax is x, value of %ecx is y  | Ans | 
+-------------                |--------|
+leal 6(%eax), %edx           | x + 6   |
+leal (%eax, %ecx), %edx      | x + y   |
+leal (%eax, %ecx, 4), %edx   | x + 4 * y   |
+leal 7(%eax, %eax, 8), %edx  | 9 * x + 7   |
+leal 0xA(, %ecx, 4), %edx    | 10 + 4 * y  |
+leal 9(%eax, %ecx, 2), %edx  | 9 + x + 2 * y  |
+
+## 3-7:
+
+    Origin                  |  Des   |   Value |
+-------------               |--------| --------| 
+addl %ecx, (%eax)           | 0x100  |  0xFF   |
+subl %edx, 4(%eax)          | 0x104  |  0xA8   |
+imull $16, (%eax, %edx, 4)  | 0x10C  |  0x110  |
+incl 8(%eax)                | 0x108  |  0x14   |
+decl %ecx                   | %ecx   |  0x0    |
+subl %edx, %eax             | %eax   |  0xFD   |
+
