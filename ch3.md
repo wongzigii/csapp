@@ -77,3 +77,45 @@ incl 8(%eax)                | 0x108  |  0x14   |
 decl %ecx                   | %ecx   |  0x0    |
 subl %edx, %eax             | %eax   |  0xFD   |
 
+## 3-8:
+
+````c
+int shift_left2_rightn(int x, int n)
+{
+	x <<= 2;
+	x >>= n;
+	return x;
+}
+````
+
+````assembly
+movl 8(%ebp), %eax
+shll $2, %eax
+movl 12(%ebp), %ecx
+sarl %ecx, %eax
+````
+
+## 3-9:
+
+````c
+int arith(int x, int y, int z)
+{
+	int t1 = x ^ y;
+	int t2 = t1 >> 3;
+	int t3 == ~t2;
+	int t4 = t3-z;
+	return t4;
+}
+````
+
+````assembly
+movl 12(%ebp), %eax
+xorl 8(%ebp), %eax
+sarl $3, %eax
+notl %eax
+subl 16(%ebp), %eax
+````
+
+## 3-10:
+
+A. [Zero the register](http://stackoverflow.com/questions/33666617/what-is-the-best-way-to-set-a-register-to-zero-in-x86-assembly-xor-mov-or-and/33668295#33668295).
