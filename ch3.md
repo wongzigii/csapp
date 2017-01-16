@@ -119,3 +119,7 @@ subl 16(%ebp), %eax
 ## 3-10:
 
 A. [Zero the register](http://stackoverflow.com/questions/33666617/what-is-the-best-way-to-set-a-register-to-zero-in-x86-assembly-xor-mov-or-and/33668295#33668295).
+
+B. `movl $0, %edx`
+
+C. `xorl %edx, %edx` uses only 2 bytes, while `movl $0, %edx` uses 5 bytes.  
