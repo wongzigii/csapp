@@ -122,4 +122,39 @@ A. [Zero the register](http://stackoverflow.com/questions/33666617/what-is-the-b
 
 B. `movl $0, %edx`
 
-C. `xorl %edx, %edx` uses only 2 bytes, while `movl $0, %edx` uses 5 bytes.  
+C. `xorl %edx, %edx` uses only 2 bytes, while `movl $0, %edx` uses 5 bytes. 
+
+- objdump
+ 
+
+## 3-13:
+
+A. 
+
+````assembly
+cmpl %eax, %edx  // l: 32-bits, data_t is int type
+setl %al
+````
+
+B.
+
+````assembly
+cmpw %ax, %dx    // w: 16-bits, data_t is short type
+setge %al
+````
+
+C.
+
+````assembly
+cmpb %al, %dl    // b: 8-bits, data_t is unsigned char type
+setb %al
+````
+
+D.
+
+````assembly
+cmpl %eax, %edx  // l: 32-bits, data_t might be int, long or unsigned 
+setne %al
+````
+
+
