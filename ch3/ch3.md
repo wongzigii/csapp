@@ -1,3 +1,5 @@
+# Solutions of chapter 3
+
 ## 3-1:
 
            |Value      | 
@@ -125,6 +127,10 @@ B. `movl $0, %edx`
 C. `xorl %edx, %edx` uses only 2 bytes, while `movl $0, %edx` uses 5 bytes. 
 
 - objdump
+
+## 3-11:
+
+
  
 
 ## 3-13:
