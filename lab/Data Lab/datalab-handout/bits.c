@@ -293,7 +293,39 @@ int isLessOrEqual(int x, int y) {
  *   Rating: 4
  */
 int ilog2(int x) {
-  return x >> 2;
+  // find the highest bit 1 of the binary number
+  //
+  
+  int tmp, bitmask, bits, total = 0;
+  
+  // check left 16 bitsmask, equals 0xFFFFFFFF if left 16 bits have at least one 1, otherwise will be 0x0
+  tmp = x >> 16;
+  bitmask = ((!!tmp) << 31) >> 31;
+  bits = (bitmask & tmp) | (~bitmask & x);
+  total += (bitmask & 16) | (~bitmask & 0);
+  
+  // get bits from previous
+  tmp = bits >> 8;
+  bitmask = ((!!tmp) << 31) >> 31;
+  bits = (bitmask & tmp) | (~bitmask & bits);
+  total += (bitmask & 8) | (~bitmask & 0);
+  
+  tmp = bits >> 4;
+  bitmask = ((!!tmp) << 31) >> 31;
+  bits = (bitmask & tmp) | (~bitmask & bits);
+  total += (bitmask & 4) | (~bitmask & 0);
+  
+  tmp = bits >> 2;
+  bitmask = ((!!tmp) << 31) >> 31;
+  bits = (bitmask & tmp) | (~bitmask & bits);
+  total += (bitmask & 2) | (~bitmask & 0);
+  
+  tmp = bits >> 1;
+  bitmask = ((!!tmp) << 31) >> 31;
+  bits = (bitmask & tmp) | (~bitmask & bits);
+  total += (bitmask & 1) | (~bitmask & 0);
+  
+  return total;
 }
 /*
  * float_neg - Return bit-level equivalent of expression -f for
