@@ -197,7 +197,13 @@ int bitCount(int x) {
  *   Rating: 4
  */
 int bang(int x) {
-  return 2;
+
+  // just to guarantee that the MSB will be 0 if the number is non zero,
+  // and be 1 if the original was 0
+  //
+  x = x | (~x + 1);  // (x | -x) : MSB will 0 if x is original zero, otherwise MSB will be 1
+  x = x >> 31; // extend bit sign from (1...) or (0...), so result is either -1(1111) or 0(0000) => plus 1 => 0 or 1
+  return x + 1;  //
 }
 /*
  * tmin - return minimum two's complement integer
