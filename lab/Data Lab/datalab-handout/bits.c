@@ -154,8 +154,8 @@ int getByte(int x, int n) {
   // since we can't use `*`
   // that is: bits = n << 3
   int bits = n << 3;
-  int x = x >> bits;
-  return 0xFF & x;
+  int after = x >> bits;
+  return 0xFF & after;
 
 }
 /*
@@ -252,7 +252,6 @@ int negate(int x) {
  */
 int isPositive(int x) {
   // result should be converted to bool
-  //
   int msb = !(x >> 31);  // most significant bit = 0 => x >= 0
   return msb & !!x;
 }
