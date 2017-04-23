@@ -367,7 +367,53 @@ unsigned float_neg(unsigned uf) {
  *   Rating: 4
  */
 unsigned float_i2f(int x) {
-  return 2;
+  // integer to float
+  // 1000 0000 0000 0000 int: -Int.max
+  // (-1)^sign * 2^(e-127), so e = 158
+  // that is 1 1001 1110 0000 000
+//  if (x == 0) {
+//    return 0;
+//  } else if (x == 0x80000000) {
+//    return 0xcf000000;
+//  }
+//  
+//  int sign = (x >> 31) & 0x01;
+//  if (sign) {
+//    return -x;
+//  }
+//  int exponent = 127;
+//  
+//  return 2;
+  int sign=x>>31&1;
+  int i;
+  int exponent;
+  int fraction;
+  int delta;
+  int fraction_mask;
+  if(x==0)//||x==0x8000000)
+    return x;
+  else if(x==0x80000000)
+    exponent=158;
+  else{
+    if (sign)//turn negtive to positive
+      x = -x;
+    i = 30;
+    while ( !(x >> i) )//see how many bits do x have(rightshift until 0)
+      i--;
+    //printf("%x %d\n",x,i);
+    exponent = i + 127;
+    x = x << (31 - i);//clean all those zeroes of high bits
+    fraction_mask = 0x7fffff;//(1 << 23) - 1;
+    fraction = fraction_mask & (x >> 8);//right shift 8 bits to become the fraction,sign and exp have 8 bits total
+    x = x & 0xff;
+    delta = x > 128 || ((x == 128) && (fraction & 1));//if lowest 8 bits of x is larger than a half,or is 1.5,round up 1
+    fraction += delta;
+    if(fraction >> 23) {//if after rounding fraction is larger than 23bits
+      fraction &= fraction_mask;
+      exponent += 1;
+    }
+  }
+  return (sign<<31)|(exponent<<23)|fraction;
 }
 /*
  * float_twice - Return bit-level equivalent of expression 2*f for
