@@ -343,7 +343,19 @@ int ilog2(int x) {
  *   Rating: 2
  */
 unsigned float_neg(unsigned uf) {
- return 2;
+ // https://en.wikipedia.org/wiki/Single-precision_floating-point_format
+ // http://stackoverflow.com/a/12038943/4234171
+ // NaN +- infi
+ // 1000 0000 0000 0000
+ unsigned sign_mask = 0x80000000;
+ // 1 1111 1111 1000 000
+ unsigned nan = 0x7FC00000;
+ // 0 1111 1111 1000 000
+ unsigned infi = 0xFFC00000;
+ if (uf == nan || uf == infi) {
+   return uf;
+ }
+ return sign_mask ^ uf;
 }
 /*
  * float_i2f - Return bit-level equivalent of expression (float) x
